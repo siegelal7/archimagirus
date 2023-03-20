@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 // const cors = require("cors");
 const ingredientController = require('./controllers/ingredientController');
+const UserController = require('./routes/Users')
 
 const PORT = process.env.PORT || 3025;
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // app.use(express.static("client/build"));
 app.use(ingredientController);
+app.use(UserController);
 app.use(express.static("client/build"));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/archimagirus", {
