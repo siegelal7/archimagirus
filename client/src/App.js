@@ -1,7 +1,5 @@
 // import './App.css';
-// import ImageTextReader from './Components/ImageTextReader/ImageTextReader';
-// import TryExample from './Components/TryExample/TryExample';
-import { BrowserRouter as Router, Route, Routes, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./pages/Auth/Register.jsx";
 import HomePage from './pages/HomePage';
 import Login from './pages/Auth/Login.jsx';
