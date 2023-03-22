@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const path = require("path");
 // const cors = require("cors");
 const ingredientController = require('./controllers/ingredientController');
-const UserController = require('./routes/Users')
+const UserController = require('./routes/Users');
+const kitchenController = require('./controllers/kitchenController');
+
 
 const PORT = process.env.PORT || 3025;
 
@@ -15,7 +17,13 @@ app.use(express.json());
 // app.use(express.static("client/build"));
 app.use(ingredientController);
 app.use(UserController);
-app.use(express.static("client/build"));
+app.use(kitchenController);
+// app.use(express.static("client/build"));
+app.use(express.static(__dirname));
+
+app.get("/*", function(req, res) {
+  res.sendFile(path.join(__dirname, "./client/build/index.html"));
+});
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/archimagirus", {
   useNewUrlParser: true,

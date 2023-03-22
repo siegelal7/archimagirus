@@ -44,6 +44,7 @@ const Login = (props) => {
         // setRole(res.data.user.role);
         // localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("role", res.data.user.role);
+        localStorage.setItem("id", res.data.user.id);
         localStorage.setItem("token", res.data.token);
         navigate('/');
         // history.push("/");

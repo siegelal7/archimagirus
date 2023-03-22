@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const KitchenSchema = new Schema({
   kitchenName: {
     type: String,
+    required: true
   },
   kitchenDescription: {
     type: String,

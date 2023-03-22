@@ -5,7 +5,7 @@ import Modal from "react-modal";
 // import AuthContext from "../../utils/AuthContext";
 // import UserContext from "../../utils/UserContext";
 // import RoleContext from "../../utils/roleContext";
-// import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
@@ -15,7 +15,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [userName, setUserName] = useState("");
-  const [onboardingRole, setOnboardingRole] = useState("Consumer");
+  const [onboardingRole, setOnboardingRole] = useState("User");
   const [roleCheckBox, setRoleCheckBox] = useState(false);
   // const history = useHistory();
 
@@ -28,6 +28,7 @@ const Register = () => {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [accountExists, setAccountExists] = useState(false);
+  const navigate = useNavigate();
   let re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
   // handle submit button
@@ -52,9 +53,10 @@ const Register = () => {
           // setRole(response.data.user.role);
 
           // TODO: might be able to get rid of this
-          // localStorage.setItem("role", response.data.user.role);
-          // localStorage.setItem("token", response.data.token);
-          // history.push("/");
+          localStorage.setItem("role", response.data.user.role);
+          localStorage.setItem("id", response.data.user.id);
+          localStorage.setItem("token", response.data.token);
+          navigate('/');
         })
         .catch((err) => {
           console.log(err);
