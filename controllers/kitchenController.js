@@ -24,6 +24,18 @@ router.post("/api/kitchen", ({ body }, res) => {
       });
   });
 
+  router.get("/api/getkitchenssearch/:term", (req, res) => {
+    let term= req.params.term;
+    db.Kitchen.find({kitchenName: new RegExp(term)})
+      // .populate("kits")
+      .then((found) => {
+        res.json(found);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  });
+
 //   router.delete('/api/deleteaperson/:id', (req,res)=>{
 //     db.Name.findByIdAndDelete(req.params.id)
 //       .then((person)=>{

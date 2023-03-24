@@ -1,0 +1,9 @@
+.flexGrid {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;    
+}
+
+.searchForm {
+    padding-bottom: 2rem;
+}

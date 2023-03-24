@@ -8,6 +8,7 @@ export default function Kitchen() {
     const [kitchenName, setKitchenName] = useState("");
     const [creatorId, setCreatorId]=useState('');
     const [kitchens, setKitchens]=useState([]);
+    const [showLoginText,setShowLoginText]=useState('false');
     // const [kitchenNames,setKitchenNames]=useState([]);
     const [logicHasRan,setLogicHasRan]=useState(false);
     const handleNameChange=(e)=>{
@@ -21,19 +22,20 @@ export default function Kitchen() {
       return () => {
         setKitchenName('');
         setCreatorId('');
+        setShowLoginText(false);
       }
     }, []);
+
     const refreshComponent = (e)=>{
         fireRefresh(creatorId);
     }
+
     const fireRefresh=(checkId)=>{
         // const id=creatorId;
-        console.log(creatorId);
         // if(creatorId){
             axios.get(`/api/getkitchens/${checkId}`)
             // axios.get(`/api/getkitchens/${creatorId}`)
             .then(response=>{
-                console.log(response);
                 setKitchens(response.data);
                 setLogicHasRan(true);
             })
@@ -50,21 +52,24 @@ export default function Kitchen() {
             kitchenName,
             creatorId
         };
-        console.log(body);
-        axios.post('/api/kitchen',body)
-            .then(response=>{
-                // console.log(response);
-                refreshComponent();
-            })
-            .catch(err=>{
-                console.log(err);
-            })
+        if(body.creatorId && body.creatorId!=''){
+            axios.post('/api/kitchen',body)
+                .then(response=>{
+                    refreshComponent();
+                })
+                .catch(err=>{
+                    console.log(err);
+                });
+        } else if(!body.creatorId){
+            setShowLoginText(true);
+        }
     }
   return (
     <>
         <div>Kitchen</div>
         <Link to='/logout'>Logout</Link>
-        <Link to='/login'>Login</Link>    
+        <Link to='/login'>Login</Link>
+        <Link to='/'>Home Page</Link>
 
         <AddKitchen 
             kitchenName={kitchenName} 
@@ -75,6 +80,7 @@ export default function Kitchen() {
             handleSubmit={handleSubmit}
         ></AddKitchen>
         <DisplayKitchens kitchens={kitchens} setKitchens={setKitchens} refreshComponent={refreshComponent}></DisplayKitchens>
+        {showLoginText == true &&  (<p>Please Login!</p>)}
     </>
   )
 }

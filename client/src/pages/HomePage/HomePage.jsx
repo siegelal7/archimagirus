@@ -1,5 +1,6 @@
 import React from 'react';
 import {  Link } from "react-router-dom";
+import SearchKitchens from '../../Components/SearchKitchens/SearchKitchens';
 
 export default function HomePage() {
   return (
@@ -9,6 +10,7 @@ export default function HomePage() {
         <Link to="/login">Login</Link>
         <Link to ="/logout">Logout</Link>
         <Link to="/kitchen">Kitchen</Link>
+        <SearchKitchens></SearchKitchens>
     </>
   )
 }
