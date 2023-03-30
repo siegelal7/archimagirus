@@ -33,7 +33,7 @@ export default function Kitchen() {
     const fireRefresh=(checkId)=>{
         // const id=creatorId;
         // if(creatorId){
-            axios.get(`/api/getkitchens/${checkId}`)
+            axios.get(`/api/getkitchensbycreator/${checkId}`)
             // axios.get(`/api/getkitchens/${creatorId}`)
             .then(response=>{
                 setKitchens(response.data);

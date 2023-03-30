@@ -12,9 +12,21 @@ router.post("/api/kitchen", ({ body }, res) => {
       });
   });
 
-  router.get("/api/getkitchens/:id", (req, res) => {
+  router.get("/api/getkitchensbycreator/:id", (req, res) => {
     let id = req.params.id;
     db.Kitchen.find({creatorId:id})
+      // .populate("kits")
+      .then((found) => {
+        res.json(found);
+      })
+      .catch((err) => {
+        res.status(400).json(err);
+      });
+  });
+
+  router.get("/api/getkitchensbyid/:id", (req, res) => {
+    let id = req.params.id;
+    db.Kitchen.findById(id)
       // .populate("kits")
       .then((found) => {
         res.json(found);

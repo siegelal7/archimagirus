@@ -6,6 +6,7 @@ import './SearchKitchens.css';
 export default function SearchKitchens() {
   const [searchValue,setSearchValue]=useState('');
   const [kitchensReturned,setKitchensReturned]=useState([]);
+  const [kitchensReturnText,setKitchensReturnText]= useState('Search for a kitchen!');
 //   const [test,setTest]=useState("Test")
   
   const handleSearchInputChange =(e)=>{
@@ -16,11 +17,17 @@ export default function SearchKitchens() {
     e.preventDefault();
     axios.get(`/api/getkitchenssearch/${searchValue}`)
         .then(response=>{
-            // console.log(response);
-            setKitchensReturned(response.data);
+            console.log(response);
+            if(response.data.length==0){
+              setKitchensReturnText('No Kitchens returned');
+            }
+            else{
+              setKitchensReturned(response.data);
+            }
         })
         .catch(err=>{
             console.log(err);
+            // setKitchensReturnText('No Kitchens returned');
         });
   };
 
@@ -33,7 +40,7 @@ export default function SearchKitchens() {
             </form>
         </div>
         <div className='flexGrid'>
-        {kitchensReturned.length == 0 ? (<p>No Results</p>) : (kitchensReturned.map(x => (
+        {kitchensReturned.length == 0 ? (<h2>{kitchensReturnText}</h2>) : (kitchensReturned.map(x => (
                 <React.Fragment key={x._id}>
                     <KitchenCard kitchen={x}></KitchenCard>
                 </React.Fragment>
