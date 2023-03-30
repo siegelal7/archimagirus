@@ -11,7 +11,6 @@ export default function SingleKitchen() {
         // console.log(id);
         axios.get(`/api/getkitchensbyid/${id}`)
             .then(response=>{
-                console.log(response.data);
                 setKitchen(response.data);
             })
             .catch(err=>{
