@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {useState,useEffect} from 'react';
-import {useParams} from 'react-router-dom';
+import {Link, useParams} from 'react-router-dom';
 
 export default function SingleKitchen() {
     const {id} = useParams();
@@ -21,6 +21,7 @@ export default function SingleKitchen() {
 
     return (
         <div>
+            <Link to='/'>Home Page</Link>
             {errorText !='' ? (<p>{errorText}</p>) : (<p>{kitchen.kitchenName}</p>)}
         </div>
     )

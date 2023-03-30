@@ -9,7 +9,7 @@ export default function HomePage() {
         <Link to="/register">Register</Link>
         <Link to="/login">Login</Link>
         <Link to ="/logout">Logout</Link>
-        <Link to="/kitchen">Kitchen</Link>
+        <Link to="/kitchen">My Kitchens</Link>
         <SearchKitchens></SearchKitchens>
     </>
   )

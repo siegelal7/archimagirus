@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './KitchenCard.css';
 
-export default function KitchenCard({kitchen}) {
+export default function KitchenCard({kitchen,onClick}) {
   useEffect(()=>{
     if(kitchen){
         // console.log(kitchen);
@@ -9,7 +9,7 @@ export default function KitchenCard({kitchen}) {
   }, []);
 
   return (
-    <div className='card'>
+    <div className='card' data-id={kitchen._id} onClick={onClick}>
         <p className='innerText'>
             {kitchen?.kitchenName}
         </p>
