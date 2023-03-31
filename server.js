@@ -18,7 +18,6 @@ app.use(express.json());
 app.use(ingredientController);
 app.use(UserController);
 app.use(kitchenController);
-// app.use(express.static("client/build"));
 app.use(express.static(__dirname));
 
 app.get("/*", function(req, res) {

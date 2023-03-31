@@ -48,7 +48,7 @@ router.post("/api/kitchen", ({ body }, res) => {
       });
   });
 
-//   router.delete('/api/deleteaperson/:id', (req,res)=>{
+//   router.delete('/api/deleteperson/:id', (req,res)=>{
 //     db.Name.findByIdAndDelete(req.params.id)
 //       .then((person)=>{
 //         res.json(person);
