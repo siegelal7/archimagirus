@@ -54,7 +54,7 @@ const Register = () => {
 
           // TODO: might be able to get rid of this
           localStorage.setItem("role", response.data.user.role);
-          localStorage.setItem("id", response.data.user.id);
+          localStorage.setItem("id", response.data.user._id);
           localStorage.setItem("token", response.data.token);
           navigate('/');
         })

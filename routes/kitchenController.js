@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const db = require("../models");
-// const auth = require("../middleware/auth");
+const auth = require("../middleware/auth");
 
 router.post("/api/kitchen", ({ body }, res) => {
     db.Kitchen.create(body)
@@ -12,7 +12,7 @@ router.post("/api/kitchen", ({ body }, res) => {
       });
   });
 
-  router.get("/api/getkitchensbycreator/:id", (req, res) => {
+  router.get("/api/getkitchensbycreator/:id", auth,  (req, res) => {
     let id = req.params.id;
     db.Kitchen.find({creatorId:id})
       // .populate("kits")

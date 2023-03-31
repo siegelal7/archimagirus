@@ -44,7 +44,7 @@ const Login = (props) => {
         // setRole(res.data.user.role);
         // localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("role", res.data.user.role);
-        localStorage.setItem("id", res.data.user.id);
+        localStorage.setItem("id", res.data.user._id);
         localStorage.setItem("token", res.data.token);
         navigate('/');
         // history.push("/");
@@ -61,7 +61,7 @@ const Login = (props) => {
 
   const handleCloseBtnClick = () => {
     setModalIsOpen(false);
-    let path = "/";
+    // let path = "/";
     // history.push(path);
   };
 

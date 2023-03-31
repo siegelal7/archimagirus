@@ -42,7 +42,7 @@ router.post("/register", async (req, res) => {
     res.status(200).json({
       token,
       user: {
-        id: savedUser.id,
+        _id: savedUser.id,
         name: savedUser.name,
         userName: savedUser.userName,
         email: savedUser.email,
@@ -76,7 +76,7 @@ router.post("/login", async (req, res) => {
     res.status(200).json({
       token,
       user: {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         userName: user.userName,
         email: user.email,

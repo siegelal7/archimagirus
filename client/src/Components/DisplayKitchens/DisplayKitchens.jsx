@@ -19,7 +19,11 @@ export default function DisplayKitchens({refreshComponent,kitchens,setKitchens})
     }, []);
 
     const fireRefresh=(checkId)=>{
-            axios.get(`/api/getkitchensbycreator/${checkId}`)
+            axios.get(`/api/getkitchensbycreator/${checkId}`, {
+              headers: {
+                "x-auth-token": localStorage.getItem("token"),
+              },
+            })
             .then(response=>{
                 setKitchens(response.data);
                 setLogicHasRan(true);
