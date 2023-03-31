@@ -3,9 +3,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 // const cors = require("cors");
-const ingredientController = require('./controllers/ingredientController');
+const ingredientController = require('./routes/ingredientController');
 const UserController = require('./routes/Users');
-const kitchenController = require('./controllers/kitchenController');
+const kitchenController = require('./routes/kitchenController');
 
 
 const PORT = process.env.PORT || 3025;

@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 // import AuthContext from "../../utils/AuthContext";
-// import UserContext from "../../utils/UserContext";
+import {UserContext} from "../../Context/UserContext";
 // import RoleContext from "../../utils/roleContext";
 import { useNavigate } from "react-router-dom";
 // import "./auth.css";
@@ -14,7 +14,7 @@ const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   // const { setJwt } = useContext(AuthContext);
-  // const { setId } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   // const { setRole } = useContext(RoleContext);
   // const history = createBrowserHistory();
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Login = (props) => {
       .then((res) => {
         // console.log(res);
         // setJwt(res.data.token);
-        // setId(res.data.user.id);
+        setUser(res.data.user);
         // setRole(res.data.user.role);
         // localStorage.setItem("name", res.data.user.name);
         localStorage.setItem("role", res.data.user.role);

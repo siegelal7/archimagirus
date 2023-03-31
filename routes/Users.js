@@ -3,8 +3,9 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 // import jwt from "jsonwebtoken";
 const jwt = require("jsonwebtoken");
+const db = require("../models");
 // contentCreator model
-const User = require('../models/User')
+const User = require('../models/User');
 
 // POST api/User
 // Register new User
@@ -85,6 +86,18 @@ router.post("/login", async (req, res) => {
   } catch (e) {
     res.status(400).json({ msg: e.msg });
   }
+});
+
+router.get('/api/user/:id', (req,res)=>{
+  const id = req.params.id;
+  db.User.findById(id)
+  // .populate("kits")
+  .then((found) => {
+    res.json(found);
+  })
+  .catch((err) => {
+    res.status(400).json(err);
+  });
 });
 
 // router.get("/logout",)
