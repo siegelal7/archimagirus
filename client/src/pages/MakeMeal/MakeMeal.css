@@ -1,0 +1,21 @@
+.grid {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: center;
+}
+
+.row-column {
+    width: 50%;
+}
+.padding {
+    margin-top: 0.3rem;
+}
+
+#ingredients {
+    background-color: green;
+}
+
+#recipe {
+    background-color: pink;
+}

@@ -10,6 +10,7 @@ import SingleKitchen from "./pages/SingleKitchen/SingleKitchen.jsx";
 import { useEffect, useState } from 'react';
 import axios from "axios";
 import {UserContext} from './Context/UserContext';
+import MakeMeal from "./pages/MakeMeal/MakeMeal.jsx";
 // const UserContext = createContext();
 
 function App() {
@@ -39,8 +40,9 @@ function App() {
             <Route exact path="/login" element={<Login />}></Route>
             <Route exact path="/imagereader" element={<ImageTextReader />}></Route>
             <Route exact path="/kitchen" element={<Kitchen />}></Route>
-            <Route exact path="/logout" element={<Logout/>}></Route>
             <Route path="/singlekitchen/:id" element={<SingleKitchen />}></Route>
+            <Route path="/make/:id" element={<MakeMeal />}></Route>
+            <Route exact path="/logout" element={<Logout/>}></Route>
 
           </Routes>
         </Router>  
