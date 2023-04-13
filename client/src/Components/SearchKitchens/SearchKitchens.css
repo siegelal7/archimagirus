@@ -7,3 +7,10 @@
 .searchForm {
     padding-bottom: 2rem;
 }
+
+.loadingWrapper{
+    text-align: center;
+}
+
+.loadingSvg {
+}

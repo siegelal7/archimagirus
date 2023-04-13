@@ -1,14 +1,20 @@
 import {useContext, useEffect, useState, Fragment} from 'react';
 import './HomePage.css';
-import {  Link } from "react-router-dom";
+import {  Link, useLocation } from "react-router-dom";
 import SearchKitchens from '../../Components/SearchKitchens/SearchKitchens';
 import { UserContext } from '../../Context/UserContext';
 
 export default function HomePage() {
+  const [priorSearchTerm, setPriorSearchTerm]=useState('');
   const {user} = useContext(UserContext);
+  const location = useLocation();
 
-  // useEffect(()=>{
-  // },[]);
+  useEffect(()=>{
+    // console.log(location?.state?.from);
+    if (location && location?.state?.from != priorSearchTerm){
+      setPriorSearchTerm(location?.state?.from);
+    }
+  },[]);
 
   return (
     <>
@@ -23,7 +29,7 @@ export default function HomePage() {
       
         <h3 className='greetingText'>Hello {user?.name}</h3>
         {/* {user?.name ? <p>Hello {user?.name}</p>: <p>Log in to see</p>} */}
-        <SearchKitchens></SearchKitchens>
+        <SearchKitchens priorSearchTerm={priorSearchTerm}></SearchKitchens>
     </>
   )
 }
