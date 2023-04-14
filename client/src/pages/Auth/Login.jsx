@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 // import AuthContext from "../../utils/AuthContext";
-import {UserContext} from "../../Context/UserContext";
+import { UserContext } from "../../Context/UserContext";
 // import RoleContext from "../../utils/roleContext";
 import { useNavigate } from "react-router-dom";
 // import "./auth.css";
@@ -46,7 +46,7 @@ const Login = (props) => {
         localStorage.setItem("role", res.data.user.role);
         localStorage.setItem("id", res.data.user._id);
         localStorage.setItem("token", res.data.token);
-        navigate('/');
+        navigate("/");
         // history.push("/");
       })
       .catch((err) => {
@@ -123,7 +123,7 @@ const Login = (props) => {
               <h3>&times;</h3>
             </button>
             <p className="mt-3">
-              <Link to="/signup">Don't have an account? Click here.</Link>
+              <Link to="/register">Don't have an account? Click here.</Link>
             </p>
             {incompleteError && (
               <div className="alert alert-danger mt-3" role="alert">
