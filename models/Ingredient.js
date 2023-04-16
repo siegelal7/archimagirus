@@ -9,6 +9,7 @@ const IngredientSchema = new Schema({
         type: String,
         enum: ["Vegetable", "Fruit", "Meat", "Nut", "Drink", "Dairy", "Fish"],
       },
+    kitchen: { type: Schema.Types.ObjectId, ref: "Kitchen" },
     quantity: {
         type: Number
     }

@@ -2,9 +2,10 @@ import React,{useEffect,useState} from 'react'
 import AddKitchen from '../../Components/AddKitchen/AddKitchen';
 import axios from 'axios';
 import DisplayKitchens from '../../Components/DisplayKitchens/DisplayKitchens';
-import { Link } from 'react-router-dom';
+import { Link,useParams } from 'react-router-dom';
 
 export default function Kitchen() {
+    const {id} = useParams();
     const [kitchenName, setKitchenName] = useState("");
     const [creatorId, setCreatorId]=useState('');
     const [kitchens, setKitchens]=useState([]);
@@ -15,25 +16,25 @@ export default function Kitchen() {
         setKitchenName(e.target.value);
     }
     useEffect(() => {
-      const uid= localStorage.getItem('id');
-      if(uid!=null && uid!=''){
-        setCreatorId(uid);
-      }
-      return () => {
-        setKitchenName('');
-        setCreatorId('');
-        setShowLoginText(false);
-      }
+    //   const uid= localStorage.getItem('id');
+    //   if(uid!=null && uid!=''){
+    //     setCreatorId(uid);
+    //   }
+    //   return () => {
+    //     setKitchenName('');
+    //     setCreatorId('');
+    //     setShowLoginText(false);
+    //   }
     }, []);
 
     const refreshComponent = (e)=>{
-        fireRefresh(creatorId);
+        fireRefresh();
     }
 
-    const fireRefresh=(checkId)=>{
+    const fireRefresh=()=>{
         // const id=creatorId;
         // if(creatorId){
-            axios.get(`/api/getkitchensbycreator/${checkId}`, {
+            axios.get(`/api/getkitchensbycreator/${id}`, {
                 headers: {
                   "x-auth-token": localStorage.getItem("token"),
                 },
@@ -74,6 +75,7 @@ export default function Kitchen() {
         <Link to='/logout'>Logout</Link>
         <Link to='/login'>Login</Link>
         <Link to='/'>Home Page</Link>
+        <Link to={`/make/${id}`}>Create!</Link>
 
         <AddKitchen 
             kitchenName={kitchenName} 
@@ -83,7 +85,7 @@ export default function Kitchen() {
             handleNameChange={handleNameChange}
             handleSubmit={handleSubmit}
         ></AddKitchen>
-        <DisplayKitchens kitchens={kitchens} setKitchens={setKitchens} refreshComponent={refreshComponent}></DisplayKitchens>
+        <DisplayKitchens id={id} kitchens={kitchens} setKitchens={setKitchens} refreshComponent={refreshComponent}></DisplayKitchens>
         {showLoginText == true &&  (<p>Please Login!</p>)}
     </>
   )

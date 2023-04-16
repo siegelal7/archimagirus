@@ -1,21 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useContext } from "react";
 import "./MakeMeal.css";
 import Draggable from "react-draggable";
 import GridLayout, {
   Responsive as ResponsiveGridLayout,
 } from "react-grid-layout";
-import { Link } from "react-router-dom";
+import { Link, useParams,useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { UserContext } from "../../Context/UserContext";
 
 export default function MakeMeal() {
+
+  const navigate=useNavigate();
+
+  const {user} =useContext(UserContext);
+  const {id}=useParams();
   const [ingreds, setIngreds] = useState([]);
   const [recipe, setRecipe] = useState([]);
+  const [loginPleaseText, setLoginPleaseText]=useState('');
   const [newIngred, setNewIngred] = useState({
     name: '',
-    type:''
+    type:'Meat',
+    kitchen:id ? id : '',
   });
 
   useEffect(() => {
+    // console.log(user);
+    if(!user){
+      navigate('/login')
+    }
+
     if (ingreds.length === 0) {
       axios.get('/api/getallingredients')
         .then(response=>{
@@ -72,14 +85,14 @@ export default function MakeMeal() {
   const handleIngredInutChange = e =>{
         const val = e.target.value;
         if (val != ''){
-            setNewIngred({name:val});
+            setNewIngred({name:val, type:newIngred.type, kitchen: newIngred.kitchen});
         }
   }
 
   const handleSelectChange = e=>{
     const valSelected = e?.target?.value;
     if(valSelected){
-        setNewIngred({type:valSelected});
+        setNewIngred({type:valSelected, name:newIngred.name, kitchen: newIngred.kitchen});
     }
   }
 
@@ -89,7 +102,13 @@ export default function MakeMeal() {
     //     name: newIngred,
     //     quantity: 1
     // }
-    axios.post('/api/newingredient', newIngred)
+    if(!newIngred.kitchen || newIngred.kitchen === ''){
+      setLoginPleaseText('Login or create a kitchen to add an ingredient');
+    } else if(newIngred.name === ''){
+      setLoginPleaseText('Enter your ingredient name!');
+    }
+    if(newIngred.kitchen && newIngred.kitchen !== '' && newIngred.name !== ''){
+      axios.post(`/api/newingredient/${id}`, newIngred)
         .then(response=>{
             console.log(response);
             if(response.status==200){
@@ -100,6 +119,8 @@ export default function MakeMeal() {
         .catch(err=>{
             console.log(err);
         })
+    }
+    
   }
 
   // const layout = [
@@ -114,8 +135,8 @@ export default function MakeMeal() {
         <label htmlFor="ingredientName">Ingredient name: </label>
         <input name='ingredientName' style={{marginLeft:'1rem'}} value={newIngred.name} type='text' onChange={handleIngredInutChange} />
         <label htmlFor="foodGroup">Food group: </label>
-        <select id="foodGroup" name="foodGroup" onChange={handleSelectChange}>
-            <option value="Meat">Meat</option>
+        <select value={newIngred.type} placeholder=""  id="foodGroup" name="foodGroup" onChange={handleSelectChange}>
+            <option default value="Meat">Meat</option>
             <option value="Vegetable">Vegetable</option>
             <option value="Fruit">Fruit</option>
             <option value="Nut">Nut</option>
@@ -124,6 +145,7 @@ export default function MakeMeal() {
             <option value="Fish">Fish</option>
         </select>
       </form>
+      {loginPleaseText !== '' && <p>{loginPleaseText}</p>}
       {/* <div className='left'> */}
       <div className="grid">
         <h1 className="row-column">Ingredients</h1>

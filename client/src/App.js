@@ -39,7 +39,7 @@ function App() {
             <Route exact path="/register" element={<Register />}></Route>
             <Route exact path="/login" element={<Login />}></Route>
             <Route exact path="/imagereader" element={<ImageTextReader />}></Route>
-            <Route exact path="/kitchen" element={<Kitchen />}></Route>
+            <Route exact path="/kitchen/:id" element={<Kitchen />}></Route>
             <Route path="/singlekitchen/:id" element={<SingleKitchen />}></Route>
             <Route path="/make/:id" element={<MakeMeal />}></Route>
             <Route exact path="/logout" element={<Logout/>}></Route>

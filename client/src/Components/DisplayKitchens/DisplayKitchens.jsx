@@ -1,16 +1,16 @@
 import axios from 'axios';
 import React, { useState,useEffect } from 'react';
 
-export default function DisplayKitchens({refreshComponent,kitchens,setKitchens}) {
+export default function DisplayKitchens({id,refreshComponent,kitchens,setKitchens}) {
     // const [creatorId,setCreatorId]=useState('');
     const [logicHasRan,setLogicHasRan]=useState(false);
 
     useEffect(() => {
-        const checkId=localStorage.getItem('id');
-        if(checkId){
+        // const checkId=localStorage.getItem('id');
+        if(id){
             // setCreatorId(checkId);
-            fireRefresh(checkId);
-        } else if(!checkId){
+            fireRefresh(id);
+        } else if(!id){
             setLogicHasRan(true);
         }
       return () => {
@@ -18,8 +18,8 @@ export default function DisplayKitchens({refreshComponent,kitchens,setKitchens})
       }
     }, []);
 
-    const fireRefresh=(checkId)=>{
-            axios.get(`/api/getkitchensbycreator/${checkId}`, {
+    const fireRefresh=(id)=>{
+            axios.get(`/api/getkitchensbycreator/${id}`, {
               headers: {
                 "x-auth-token": localStorage.getItem("token"),
               },
