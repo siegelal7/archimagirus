@@ -34,24 +34,24 @@ export default function SearchKitchens({handleSearchInputChange,priorSearchTerm,
             </form>
         </div>
         <div className='flexGrid'>
-        {kitchensReturned?.length === 0 ? (<h2>{kitchensReturnText}</h2>) : (kitchensReturned?.map(x => (
-                <React.Fragment key={x._id}>
-                    <KitchenCard onClick={e=>handleClickSingleClick(e)} kitchen={x}></KitchenCard>
-                </React.Fragment>
-            )))}
-        {firstMount && 
-          (
-          <div className='loadingWrapper'>
-            <TailSpin
-            visible={{firstMount}}
-            height="80"
-            width="80"
-            ariaLabel="dna-loading"
-            wrapperStyle={{}}
-            wrapperClass="dna-wrapper"
-          />
-          </div>)
-        }
+          {kitchensReturned?.length === 0 ? (<h2>{kitchensReturnText}</h2>) : (kitchensReturned?.map(x => (
+                  <React.Fragment key={x._id}>
+                      <KitchenCard onClick={e=>handleClickSingleClick(e)} kitchen={x}></KitchenCard>
+                  </React.Fragment>
+              )))}
+          {firstMount && 
+            (
+            <div className='loadingWrapper'>
+              <TailSpin
+              visible={{firstMount}}
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+            />
+            </div>)
+          }
         </div>
     </div>
   )

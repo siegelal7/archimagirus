@@ -13,8 +13,8 @@ router.post("/api/newingredient/:id", ({ body, params }, res) => {
       });
   });
 
-  router.get("/api/getallingredients", (req, res) => {
-    db.Ingredient.find({})
+  router.get("/api/getallingredients/:id", (req, res) => {
+    db.Ingredient.find({kitchen:req?.params?.id})
       .then((found) => {
         res.json(found);
       })

@@ -1,45 +1,48 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useContext, Fragment} from 'react';
 import AddKitchen from '../../Components/AddKitchen/AddKitchen';
 import axios from 'axios';
 import DisplayKitchens from '../../Components/DisplayKitchens/DisplayKitchens';
 import { Link,useParams } from 'react-router-dom';
+import { UserContext } from '../../Context/UserContext';
+import './Kitchen.css';
 
 export default function Kitchen() {
     const {id} = useParams();
+    const { user } = useContext(UserContext);
     const [kitchenName, setKitchenName] = useState("");
     const [creatorId, setCreatorId]=useState('');
     const [kitchens, setKitchens]=useState([]);
-    const [showLoginText,setShowLoginText]=useState('false');
+    const [showLoginText,setShowLoginText]=useState(false);
     // const [kitchenNames,setKitchenNames]=useState([]);
     const [logicHasRan,setLogicHasRan]=useState(false);
+
     const handleNameChange=(e)=>{
         setKitchenName(e.target.value);
     }
     useEffect(() => {
-    //   const uid= localStorage.getItem('id');
-    //   if(uid!=null && uid!=''){
-    //     setCreatorId(uid);
-    //   }
-    //   return () => {
-    //     setKitchenName('');
-    //     setCreatorId('');
-    //     setShowLoginText(false);
-    //   }
-    }, []);
+        if(kitchens?.length === 0 && id){
+            fireRefresh();
+        }
+      if(user?._id !== null && user?._id !== ''){
+        setCreatorId(user?._id);
+      }
+      return () => {
+      }
+    }, [user?._id]);
 
     const refreshComponent = (e)=>{
+        setKitchenName('');
         fireRefresh();
     }
 
     const fireRefresh=()=>{
         // const id=creatorId;
         // if(creatorId){
-            axios.get(`/api/getkitchensbycreator/${id}`, {
+            axios.get(`/api/getkitchensbycreator/${user?._id}`, {
                 headers: {
                   "x-auth-token": localStorage.getItem("token"),
                 },
               })
-            // axios.get(`/api/getkitchens/${creatorId}`)
             .then(response=>{
                 setKitchens(response.data);
                 setLogicHasRan(true);
@@ -49,7 +52,7 @@ export default function Kitchen() {
             })
             // setLogicHasRan(true);
         // }
-    }
+    };
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -68,14 +71,27 @@ export default function Kitchen() {
         } else if(!body.creatorId){
             setShowLoginText(true);
         }
-    }
+    };
+    
   return (
     <>
-        <div>Kitchen</div>
-        <Link to='/logout'>Logout</Link>
+        {user?._id ? (
+            <Fragment>
+                <Link className='basicLink' to='/'>Home</Link>
+                <Link className='basicLink' to={`/make/${id}`}>Create!</Link>
+                <Link className='basicLink' to='/logout'>Logout</Link>
+            {/* <Link to={`/make/${3234}`}>Create!</Link> */}
+            </Fragment>
+        ) : (
+            <Fragment>
+                <Link className='basicLink' to="/register">Register</Link>
+                <Link className='basicLink' to='/login'>Login</Link>
+            </Fragment>
+        )}
+        {/* <Link to='/logout'>Logout</Link>
         <Link to='/login'>Login</Link>
         <Link to='/'>Home Page</Link>
-        <Link to={`/make/${id}`}>Create!</Link>
+        <Link to={`/make/${id}`}>Create!</Link> */}
 
         <AddKitchen 
             kitchenName={kitchenName} 
@@ -85,8 +101,8 @@ export default function Kitchen() {
             handleNameChange={handleNameChange}
             handleSubmit={handleSubmit}
         ></AddKitchen>
-        <DisplayKitchens id={id} kitchens={kitchens} setKitchens={setKitchens} refreshComponent={refreshComponent}></DisplayKitchens>
-        {showLoginText == true &&  (<p>Please Login!</p>)}
+        <DisplayKitchens id={id} userId={user?._id} kitchens={kitchens} setKitchens={setKitchens} refreshComponent={refreshComponent}></DisplayKitchens>
+        {showLoginText === true &&  (<p>Please Login!</p>)}
     </>
   )
 }

@@ -7,6 +7,8 @@ import GridLayout, {
 import { Link, useParams,useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { UserContext } from "../../Context/UserContext";
+import AddIngredient from "../../Components/AddIngredient/AddIngredient";
+// import DraggableGrid from "../../Components/DraggableGrid/DraggableGrid";
 
 export default function MakeMeal() {
 
@@ -24,16 +26,14 @@ export default function MakeMeal() {
   });
 
   useEffect(() => {
-    // console.log(user);
-    if(!user){
-      navigate('/login')
+    if(!user && !localStorage.getItem('id') && !localStorage.getItem('token')){
+      navigate('/login');
     }
 
     if (ingreds.length === 0) {
-      axios.get('/api/getallingredients')
+      axios.get(`/api/getallingredients/${id}`)
         .then(response=>{
             if(response.status==200){
-                console.log(response);
                 setIngreds(response.data);
             }
         })
@@ -43,21 +43,6 @@ export default function MakeMeal() {
     //   setIngreds(arr);
     }
   }, []);
-
-  const handleStart = (e) => {
-    console.log("start");
-    console.log(e);
-  };
-
-  const handleDrag = (e) => {};
-
-  const handleStop = (e) => {
-    console.log("stop");
-    console.log(e);
-    const xAxis = e.pageX;
-    if (xAxis >= 850) {
-    }
-  };
 
   const handleLayoutChange = (e) => {
     const ingredientsOnLeft = [];
@@ -72,9 +57,6 @@ export default function MakeMeal() {
       }
     }
     setRecipe(recipeOnRight);
-    // setIngreds(ingredientsOnLeft);
-    // console.log(ingredientsOnLeft);
-    // console.log(recipeOnRight);
   };
 
   const handleCreateRecipe = (e) => {
@@ -98,10 +80,6 @@ export default function MakeMeal() {
 
   const handleNewIngredSubmit = e =>{
     e.preventDefault();
-    // const payload = {
-    //     name: newIngred,
-    //     quantity: 1
-    // }
     if(!newIngred.kitchen || newIngred.kitchen === ''){
       setLoginPleaseText('Login or create a kitchen to add an ingredient');
     } else if(newIngred.name === ''){
@@ -110,8 +88,8 @@ export default function MakeMeal() {
     if(newIngred.kitchen && newIngred.kitchen !== '' && newIngred.name !== ''){
       axios.post(`/api/newingredient/${id}`, newIngred)
         .then(response=>{
-            console.log(response);
             if(response.status==200){
+              setIngreds({type:'Meat', name:'', kitchen: newIngred.kitchen})
                 // setIngreds(...ingreds,[response.data]);
                 setIngreds([...ingreds, response.data])
             }
@@ -131,22 +109,8 @@ export default function MakeMeal() {
     <>
 
       <Link to="/">Home</Link>
-      <form onSubmit={handleNewIngredSubmit}>
-        <label htmlFor="ingredientName">Ingredient name: </label>
-        <input name='ingredientName' style={{marginLeft:'1rem'}} value={newIngred.name} type='text' onChange={handleIngredInutChange} />
-        <label htmlFor="foodGroup">Food group: </label>
-        <select value={newIngred.type} placeholder=""  id="foodGroup" name="foodGroup" onChange={handleSelectChange}>
-            <option default value="Meat">Meat</option>
-            <option value="Vegetable">Vegetable</option>
-            <option value="Fruit">Fruit</option>
-            <option value="Nut">Nut</option>
-            <option value="Drink">Drink</option>
-            <option value="Dairy">Dairy</option>
-            <option value="Fish">Fish</option>
-        </select>
-      </form>
-      {loginPleaseText !== '' && <p>{loginPleaseText}</p>}
-      {/* <div className='left'> */}
+      <AddIngredient handleNewIngredSubmit={handleNewIngredSubmit} newIngred={newIngred} handleIngredInutChange={handleIngredInutChange} handleSelectChange={handleSelectChange} loginPleaseText={loginPleaseText}></AddIngredient>
+
       <div className="grid">
         <h1 className="row-column">Ingredients</h1>
         {/* <input value={newIngred} type='text' onChange={handleIngredInutChange} /> */}
@@ -164,11 +128,9 @@ export default function MakeMeal() {
         {ingreds.length !== 0 &&
           ingreds.map((i) => {
             return (
-              <div className="padding" key={i._id+' '+i.name}>
+              // <DraggableGrid key={i._id+' '+i.name} i={i}></DraggableGrid>
+              <div className="padding" key={i._id+' | '+i.name + ' | '+i.type}>
                 <Draggable
-                  onStart={handleStart}
-                  onDrag={handleDrag}
-                  onStop={handleStop}
                   grid={[20, 500]}
                 >
                   <div className="row-column" id="ingredients">

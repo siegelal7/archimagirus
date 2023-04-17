@@ -13,7 +13,7 @@ export default function SingleKitchen() {
     useEffect(()=>{
         // console.log(id);
         // console.log(location);
-        if(priorSearchTerm=='' && location?.state?.searchValue != priorSearchTerm){
+        if(priorSearchTerm === '' && location?.state?.searchValue != priorSearchTerm){
             setPriorSearchTerm(location?.state?.searchValue);
         }
         axios.get(`/api/getkitchensbyid/${id}`)
@@ -28,7 +28,7 @@ export default function SingleKitchen() {
 
     return (
         <div>
-            <Link to='/' state={{ from: priorSearchTerm }}>return to Search</Link>
+            {priorSearchTerm !== '' && priorSearchTerm ? <Link to='/' state={{ from: priorSearchTerm }}>Return to Search</Link> : <Link to={`/kitchen/${id}`}>Your kitchens</Link>}
             <Link to='/'>Home Page</Link>
             {errorText !='' ? (<p>{errorText}</p>) : (<p>{kitchen.kitchenName}</p>)}
         </div>

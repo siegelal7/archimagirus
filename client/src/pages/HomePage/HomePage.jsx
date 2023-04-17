@@ -58,17 +58,16 @@ export default function HomePage() {
 
   return (
     <>
-      <div>HomePage</div>
       {user?._id ? (
         <Fragment>
-          <Link to="/logout">Logout</Link>
-          <Link to={`/kitchen/${user._id}`}>My Kitchens</Link>
+          <Link className='basicLink' to="/logout">Logout</Link>
+          <Link className='basicLink' to={`/kitchen/${user._id}`}>My Kitchens</Link>
           {/* <Link to={`/make/${3234}`}>Create!</Link> */}
         </Fragment>
       ) : (
         <Fragment>
-          <Link to="/register">Register</Link>
-          <Link to="/login">Login</Link>
+          <Link className='basicLink' to="/register">Register</Link>
+          <Link className='basicLink' to="/login">Login</Link>
         </Fragment>
       )}
 

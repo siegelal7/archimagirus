@@ -20,7 +20,7 @@ function App() {
   useEffect(()=>{
     let userIdFromStorage = localStorage.getItem('id');
     setIdFromStorage(userIdFromStorage);
-    if(idFromStorage !== '' && idFromStorage !== null && userLoggedIn === null){
+    if(idFromStorage !== '' && idFromStorage !== null && userLoggedIn === null && !userLoggedIn?._id){
       axios.get(`/api/user/${userIdFromStorage}`)
       .then(response=>{
         setUserLoggedIn(response.data);

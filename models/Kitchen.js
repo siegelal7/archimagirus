@@ -16,29 +16,8 @@ const KitchenSchema = new Schema({
   creatorId: {
     type: String,
   },
-  // imageUrl: {
-  //   type: String,
-  // },
-//   imageUrl: [Object],
-  // videoUrl: {
-  //   type: String,
-  // },
-//   videoUrl: [Object],
-//   kitchenItems: [
-//     {
-//       affiliateLink: {
-//         type: String,
-//       },
-//       makeupCategory: {
-//         type: String,
-//       },
-//       linkClicks: {
-//         type: Number,
-//         default: 0,
-//       },
-//     },
-//   ],
-kitchenItems:[{ type: Schema.Types.ObjectId, ref: "Kitchen" }],
+  members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  ingredients:[{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
   createdDate: {
     type: Date,
     default: Date.now,
