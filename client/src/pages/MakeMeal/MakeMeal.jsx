@@ -17,7 +17,9 @@ export default function MakeMeal() {
   const {user} =useContext(UserContext);
   const {id}=useParams();
   const [ingreds, setIngreds] = useState([]);
+  // const [ingredsPlaceholder, setIngredsPlaceholder] = useState([]);
   const [recipe, setRecipe] = useState([]);
+  const [recipeName,setRecipeName]=useState('');
   const [loginPleaseText, setLoginPleaseText]=useState('');
   const [newIngred, setNewIngred] = useState({
     name: '',
@@ -25,6 +27,9 @@ export default function MakeMeal() {
     kitchen:id ? id : '',
   });
 
+  const [layout,setLayout]=useState([])
+      // { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
+      // { i: "b", x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
   useEffect(() => {
     if(!user && !localStorage.getItem('id') && !localStorage.getItem('token')){
       navigate('/login');
@@ -34,17 +39,26 @@ export default function MakeMeal() {
       axios.get(`/api/getallingredients/${id}`)
         .then(response=>{
             if(response.status==200){
+              console.log(response);
                 setIngreds(response.data);
+                setLayout(response.data.length !== 0 && response.data.forEach(i=>{
+                  let combined={
+                    
+                  }
+                }))
+                // setIngreds
             }
         })
         .catch(err=>{
             console.log(err);
         })
     //   setIngreds(arr);
+    // setIngredsPlaceholder(ingreds);
     }
   }, []);
 
   const handleLayoutChange = (e) => {
+    console.log(e);
     const ingredientsOnLeft = [];
     const recipeOnRight = [];
     for (let i = 0; i < e.length; i++) {
@@ -60,11 +74,35 @@ export default function MakeMeal() {
   };
 
   const handleCreateRecipe = (e) => {
-    console.log(recipe);
-    // console.log(ingreds);
+    // console.log(e);
+    let payload={
+      recipeName:recipeName,
+      ingredient:[],
+    }
+    for(let i = 0; i<recipe.length;i++){
+      let splitIngredArr=recipe[i]?.i.split('|');
+
+      payload ={
+        recipeName:payload.recipeName,
+        ingredient:[...payload.ingredient, splitIngredArr[0]]
+      };
+    }
+
+    if(payload.recipeName!='' && payload.ingredient.length !== 0){
+      axios.post(`/api/makefood`,payload)
+          .then(response=>{
+            console.log(response);
+            setRecipeName('');
+            setRecipe([]);
+          })
+          .catch(error=>{
+            console.log(error);
+          });
+    }
+    
   };
 
-  const handleIngredInutChange = e =>{
+  const handleIngredInputChange = e =>{
         const val = e.target.value;
         if (val != ''){
             setNewIngred({name:val, type:newIngred.type, kitchen: newIngred.kitchen});
@@ -75,6 +113,12 @@ export default function MakeMeal() {
     const valSelected = e?.target?.value;
     if(valSelected){
         setNewIngred({type:valSelected, name:newIngred.name, kitchen: newIngred.kitchen});
+    }
+  };
+
+  const handleRecipeNameChange = e=>{
+    if(e.target.value!= recipeName){
+      setRecipeName(e.target.value);
     }
   }
 
@@ -98,8 +142,8 @@ export default function MakeMeal() {
             console.log(err);
         })
     }
-    
-  }
+  };
+
 
   // const layout = [
   //     { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
@@ -109,11 +153,11 @@ export default function MakeMeal() {
     <>
 
       <Link to="/">Home</Link>
-      <AddIngredient handleNewIngredSubmit={handleNewIngredSubmit} newIngred={newIngred} handleIngredInutChange={handleIngredInutChange} handleSelectChange={handleSelectChange} loginPleaseText={loginPleaseText}></AddIngredient>
+      <AddIngredient handleNewIngredSubmit={handleNewIngredSubmit} newIngred={newIngred} handleIngredInputChange={handleIngredInputChange} handleSelectChange={handleSelectChange} loginPleaseText={loginPleaseText}></AddIngredient>
 
       <div className="grid">
         <h1 className="row-column">Ingredients</h1>
-        {/* <input value={newIngred} type='text' onChange={handleIngredInutChange} /> */}
+        {/* <input value={newIngred} type='text' onChange={handleIngredInputChange} /> */}
         <h1 className="row-column">Recipe</h1>
       </div>
       <GridLayout
@@ -129,7 +173,7 @@ export default function MakeMeal() {
           ingreds.map((i) => {
             return (
               // <DraggableGrid key={i._id+' '+i.name} i={i}></DraggableGrid>
-              <div className="padding" key={i._id+' | '+i.name + ' | '+i.type}>
+              <div className="padding" key={i._id+'|'+i.name + '|'+i.type}>
                 <Draggable
                   grid={[20, 500]}
                 >
@@ -141,7 +185,8 @@ export default function MakeMeal() {
             );
           })}
       </GridLayout>
-      <button onClick={handleCreateRecipe}>mmmmm</button>
+      <input value={recipeName} onChange={handleRecipeNameChange} type='text' name='recipeName' />
+      <button onClick={(e,layout)=>handleCreateRecipe(e,layout)}>mmmmm</button>
     </>
   );
 }

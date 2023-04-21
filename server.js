@@ -6,6 +6,7 @@ const path = require("path");
 const ingredientController = require('./routes/ingredientController');
 const UserController = require('./routes/Users');
 const kitchenController = require('./routes/kitchenController');
+const recipeController = require('./routes/recipeController');
 
 
 const PORT = process.env.PORT || 3025;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(ingredientController);
 app.use(UserController);
 app.use(kitchenController);
+app.use(recipeController);
 app.use(express.static(__dirname));
 
 app.get("/*", function(req, res) {
