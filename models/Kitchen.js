@@ -18,6 +18,7 @@ const KitchenSchema = new Schema({
   },
   members: [{ type: Schema.Types.ObjectId, ref: "User" }],
   ingredients:[{ type: Schema.Types.ObjectId, ref: "Ingredient" }],
+  recipes:[{ type: Schema.Types.ObjectId, ref: "Recipe" }],
   createdDate: {
     type: Date,
     default: Date.now,

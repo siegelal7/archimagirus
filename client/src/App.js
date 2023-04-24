@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import axios from "axios";
 import {UserContext} from './Context/UserContext';
 import MakeMeal from "./pages/MakeMeal/MakeMeal.jsx";
+import SingleRecipe from "./pages/SingleRecipe/SingleRecipe.jsx";
 // const UserContext = createContext();
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
             <Route exact path="/kitchen/:id" element={<Kitchen />}></Route>
             <Route path="/singlekitchen/:id" element={<SingleKitchen />}></Route>
             <Route path="/make/:id" element={<MakeMeal />}></Route>
+            <Route path="/recipe/:id" element={<SingleRecipe />}></Route>
             <Route exact path="/logout" element={<Logout/>}></Route>
 
           </Routes>

@@ -16,9 +16,6 @@ export default function Kitchen() {
     // const [kitchenNames,setKitchenNames]=useState([]);
     const [logicHasRan,setLogicHasRan]=useState(false);
 
-    const handleNameChange=(e)=>{
-        setKitchenName(e.target.value);
-    }
     useEffect(() => {
         if(kitchens?.length === 0 && id){
             fireRefresh();
@@ -29,6 +26,10 @@ export default function Kitchen() {
       return () => {
       }
     }, [user?._id]);
+
+    const handleNameChange=(e)=>{
+        setKitchenName(e.target.value);
+    };
 
     const refreshComponent = (e)=>{
         setKitchenName('');
@@ -78,7 +79,7 @@ export default function Kitchen() {
         {user?._id ? (
             <Fragment>
                 <Link className='basicLink' to='/'>Home</Link>
-                <Link className='basicLink' to={`/make/${id}`}>Create!</Link>
+                {/* <Link className='basicLink' to={`/make/${id}`}>Create!</Link> */}
                 <Link className='basicLink' to='/logout'>Logout</Link>
             {/* <Link to={`/make/${3234}`}>Create!</Link> */}
             </Fragment>

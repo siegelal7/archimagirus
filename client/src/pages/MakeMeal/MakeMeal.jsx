@@ -26,8 +26,9 @@ export default function MakeMeal() {
     type:'Meat',
     kitchen:id ? id : '',
   });
+  const [kitchenName,setKitchenName]=useState('');
 
-  const [layout,setLayout]=useState([])
+  // const [layout,setLayout]=useState([])
       // { i: "a", x: 0, y: 0, w: 1, h: 2, static: true },
       // { i: "b", x: 1, y: 0, w: 3, h: 2, minW: 2, maxW: 4 },
   useEffect(() => {
@@ -35,27 +36,37 @@ export default function MakeMeal() {
       navigate('/login');
     }
 
-    if (ingreds.length === 0) {
-      axios.get(`/api/getallingredients/${id}`)
-        .then(response=>{
-            if(response.status==200){
-              console.log(response);
-                setIngreds(response.data);
-                setLayout(response.data.length !== 0 && response.data.forEach(i=>{
-                  let combined={
-                    
-                  }
-                }))
-                // setIngreds
-            }
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-    //   setIngreds(arr);
-    // setIngredsPlaceholder(ingreds);
+    if (ingreds.length === 0 && id) {
+      getIngreds(id);
     }
   }, []);
+
+  useEffect(()=>{
+    if(kitchenName == undefined || kitchenName == null){
+      axios.get(`/api/getkitchensbyid/${id}`)
+        .then(response=>{
+          if(response.status==200 || response.status==304){
+            setKitchenName(response.data.kitchenName)
+          }
+        })
+        .catch(err=>{
+          console.log(err);
+        })
+    }
+  },[kitchenName])
+
+  const getIngreds = (id)=>{
+    setIngreds([]);
+    axios.get(`/api/getallingredients/${id}`)
+    .then(response=>{
+        if(response.status==200){
+          console.log(response);
+            setIngreds(response.data);
+            setKitchenName(response.data[0]?.kitchen?.kitchenName);
+        }
+    })
+  };
+
 
   const handleLayoutChange = (e) => {
     console.log(e);
@@ -73,41 +84,12 @@ export default function MakeMeal() {
     setRecipe(recipeOnRight);
   };
 
-  const handleCreateRecipe = (e) => {
-    // console.log(e);
-    let payload={
-      recipeName:recipeName,
-      ingredient:[],
-    }
-    for(let i = 0; i<recipe.length;i++){
-      let splitIngredArr=recipe[i]?.i.split('|');
-
-      payload ={
-        recipeName:payload.recipeName,
-        ingredient:[...payload.ingredient, splitIngredArr[0]]
-      };
-    }
-
-    if(payload.recipeName!='' && payload.ingredient.length !== 0){
-      axios.post(`/api/makefood`,payload)
-          .then(response=>{
-            console.log(response);
-            setRecipeName('');
-            setRecipe([]);
-          })
-          .catch(error=>{
-            console.log(error);
-          });
-    }
-    
-  };
-
   const handleIngredInputChange = e =>{
-        const val = e.target.value;
-        if (val != ''){
-            setNewIngred({name:val, type:newIngred.type, kitchen: newIngred.kitchen});
-        }
-  }
+    const val = e.target.value;
+    if (val != ''){
+        setNewIngred({name:val, type:newIngred.type, kitchen: newIngred.kitchen});
+    }
+  };
 
   const handleSelectChange = e=>{
     const valSelected = e?.target?.value;
@@ -115,12 +97,6 @@ export default function MakeMeal() {
         setNewIngred({type:valSelected, name:newIngred.name, kitchen: newIngred.kitchen});
     }
   };
-
-  const handleRecipeNameChange = e=>{
-    if(e.target.value!= recipeName){
-      setRecipeName(e.target.value);
-    }
-  }
 
   const handleNewIngredSubmit = e =>{
     e.preventDefault();
@@ -133,15 +109,57 @@ export default function MakeMeal() {
       axios.post(`/api/newingredient/${id}`, newIngred)
         .then(response=>{
             if(response.status==200){
-              setIngreds({type:'Meat', name:'', kitchen: newIngred.kitchen})
+              console.log(response);
+              // setIngreds({type:'Meat', name:'', kitchen: newIngred.kitchen});
+              setNewIngred({type:'Meat', name:'', kitchen: newIngred.kitchen});
                 // setIngreds(...ingreds,[response.data]);
-                setIngreds([...ingreds, response.data])
+                setIngreds([...ingreds, response.data?.ingredJson]);
+                
             }
         })
         .catch(err=>{
             console.log(err);
         })
     }
+  };
+
+  const handleRecipeNameChange = e=>{
+    if(e.target.value!= recipeName){
+      setRecipeName(e.target.value);
+    }
+  };
+
+  const handleCreateRecipe = (e) => {
+    e.preventDefault();
+    // console.log(e);
+    let payload={
+      recipeName:recipeName,
+      ingredient:[],
+      kitchen:id
+    }
+    for(let i = 0; i<recipe.length;i++){
+      let splitIngredArr=recipe[i]?.i.split('|');
+
+      payload ={
+        recipeName:payload.recipeName,
+        ingredient:[...payload.ingredient, splitIngredArr[0]],
+        kitchen:payload.kitchen
+      };
+    }
+
+    if(payload.recipeName!='' && payload.ingredient.length !== 0 && payload.kitchen){
+      axios.post(`/api/makefood/${payload.kitchen}`,payload)
+          .then(response=>{
+            console.log(response);
+            setRecipeName('');
+            setRecipe([]);
+            getIngreds(id);
+          })
+          .catch(error=>{
+            console.log(error);
+          });
+    }
+    
   };
 
 
@@ -152,7 +170,8 @@ export default function MakeMeal() {
   return (
     <>
 
-      <Link to="/">Home</Link>
+      <Link className="basicLink" to="/">Home</Link>
+      {kitchenName != '' && <Link className="basicLink" to={`/singlekitchen/${id}`}>Back to {kitchenName} kitchen</Link>}
       <AddIngredient handleNewIngredSubmit={handleNewIngredSubmit} newIngred={newIngred} handleIngredInputChange={handleIngredInputChange} handleSelectChange={handleSelectChange} loginPleaseText={loginPleaseText}></AddIngredient>
 
       <div className="grid">
@@ -185,8 +204,10 @@ export default function MakeMeal() {
             );
           })}
       </GridLayout>
-      <input value={recipeName} onChange={handleRecipeNameChange} type='text' name='recipeName' />
-      <button onClick={(e,layout)=>handleCreateRecipe(e,layout)}>mmmmm</button>
+      <form onSubmit={(e)=>handleCreateRecipe(e)}>
+        <input value={recipeName} onChange={handleRecipeNameChange} type='text' name='recipeName' />
+        <button onClick={(e)=>handleCreateRecipe(e)}>mmmmm</button>
+      </form>
     </>
   );
 }

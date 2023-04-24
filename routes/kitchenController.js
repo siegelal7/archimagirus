@@ -27,7 +27,8 @@ router.post("/api/kitchen", ({ body }, res) => {
   router.get("/api/getkitchensbyid/:id", (req, res) => {
     let id = req.params.id;
     db.Kitchen.findById(id)
-      // .populate("kits")
+      .populate("ingredients")
+      .populate('recipes')
       .then((found) => {
         res.json(found);
       })

@@ -10,6 +10,7 @@
 .card:hover {
     background-color: rgb(15, 103, 219);
     color: rgb(228, 224, 183);
+    cursor: pointer;
 }
 
 .innerText {

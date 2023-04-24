@@ -2,10 +2,21 @@ const router = require("express").Router();
 const db = require("../models");
 const auth = require("../middleware/auth");
 
-router.post('/api/makefood', (req,res)=>{
+router.post('/api/makefood/:id', (req,res)=>{
+    let id = req.params.id;
+    const fullJson = {};
     db.Recipe.create(req.body)
         .then(newRecipe=>{
-            res.json(newRecipe);
+            fullJson['newRecipe']=newRecipe;
+            // res.json(newRecipe);
+            db.Kitchen.findByIdAndUpdate(id, {"$push": { "recipes": newRecipe._id }})
+            .then(found=>{
+                fullJson["kitchenUpdate"]=found;
+                res.json(fullJson);
+            })
+            .catch(err=>{
+                res.status(400).json(err);
+            })
         })
         .catch(err=>{
             res.status(400).json(err);
