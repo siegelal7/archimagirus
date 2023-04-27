@@ -3,7 +3,7 @@ const db = require("../models");
 const auth = require("../middleware/auth");
 
 router.post('/api/makefood/:id', (req,res)=>{
-    let id = req.params.id;
+    const id = req.params.id;
     const fullJson = {};
     db.Recipe.create(req.body)
         .then(newRecipe=>{
@@ -22,6 +22,20 @@ router.post('/api/makefood/:id', (req,res)=>{
             res.status(400).json(err);
         });
 });
+
+router.get('/api/recipe/:id', (req, res)=>{
+    const id = req.params.id;
+    db.Recipe.findById(id)
+        .populate('ingredient')
+        .populate('kitchen')
+        .then(foundRecipe=>{
+            res.json(foundRecipe);
+        })
+        .catch(err=>{
+            res.status(400).json(err);
+        });
+});
+
 
 // router.post("/api/kitchen", ({ body }, res) => {
 //     db.Kitchen.create(body)

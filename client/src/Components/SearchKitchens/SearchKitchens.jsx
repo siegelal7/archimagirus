@@ -27,13 +27,13 @@ export default function SearchKitchens({handleSearchInputChange,priorSearchTerm,
 
   return (
     <div>
-        <div className='flexGrid searchForm'>
+        <div className='flexGridCenter searchForm'>
             <form onSubmit={handleSearch}>
                 <input type='text' onChange={e=>handleSearchInputChange(e)} value={searchValue} name='searchValue' />
                 <button onClick={handleSearch}>Find Kitchens</button>
             </form>
         </div>
-        <div className='flexGrid'>
+        <div className='flexGridCenter'>
           {kitchensReturned?.length === 0 ? (<h2>{kitchensReturnText}</h2>) : (kitchensReturned?.map(x => (
                   <React.Fragment key={x._id}>
                       <KitchenCard onClick={e=>handleClickSingleClick(e)} kitchen={x}></KitchenCard>

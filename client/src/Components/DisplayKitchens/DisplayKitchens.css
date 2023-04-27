@@ -1,5 +1,6 @@
 .flexGrid {
     display: flex;
-    justify-content: center;
+    justify-content: start !important;
+    margin:2rem 0rem 0rem 0rem !important;
     flex-flow: row wrap;    
 }

@@ -20,9 +20,12 @@ export default function SingleKitchen() {
         }
         axios.get(`/api/getkitchensbyid/${id}`)
             .then(response=>{
+                console.log('api response');
                 console.log(response);
                 setKitchen(response.data);
                 if(response.data.recipes !== 0){
+                    console.log('uh recipes...');
+                    console.log(response.data.recipes);
                     setRecipes(response.data.recipes);
                 }
             })
@@ -40,13 +43,18 @@ export default function SingleKitchen() {
         let clickedRecipe={};
         if(e.target?.localName==='p'){
             node = e.target.parentElement;
+            // console.log('1st node');
+            // console.log(node);
         } else if(e.target?.localName==='div'){
             // console.log('div');
             node=e.target;
+            // console.log('2nd node');
+            // console.log(node);
         }
         id=node.dataset?.id;
-        clickedRecipe=JSON.parse(node.dataset?.recipe);
-        console.log(JSON.parse(node.dataset.recipe));
+        clickedRecipe=node.dataset?.recipe;
+        // console.log('clickedRecipe');
+        // console.log(clickedRecipe);
         navigate(`/recipe/${id}`,{state:{recipe:clickedRecipe,kitchenFrom:kitchen}});
     }
 
@@ -67,9 +75,11 @@ export default function SingleKitchen() {
                     </ul>
                 </>
             )}
-            {recipes.length !== 0 && recipes?.map(i=>(
-                <RecipeCard recipe={i} key={i._id} handleSingleRecipeCardClick={handleSingleRecipeCardClick}></RecipeCard>
-            ))}
+            <div className='container'>
+                {recipes.length !== 0 && recipes?.map(i=>(
+                    <RecipeCard recipe={i.recipeName} recipeId={i._id} key={i._id} handleSingleRecipeCardClick={handleSingleRecipeCardClick}></RecipeCard>
+                ))}
+            </div>
         </div>
     )
 }

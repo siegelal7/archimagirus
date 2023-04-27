@@ -1,3 +1,9 @@
 .basicLink {
     margin-right: 0.5rem;
 }
+
+.container {
+    display: flex;
+    /* justify-content: center; */
+    flex-flow: row wrap; 
+}

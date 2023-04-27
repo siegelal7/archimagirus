@@ -1,6 +1,6 @@
-.flexGrid {
+.flexGridCenter {
     display: flex;
-    justify-content: center;
+    justify-content: center !important;
     flex-flow: row wrap;    
 }
 

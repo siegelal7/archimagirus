@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useState,useEffect } from 'react';
 import KitchenCard from '../KitchenCard/KitchenCard';
 import { useNavigate } from 'react-router-dom';
+import "./DisplayKitchens.css";
 
 export default function DisplayKitchens({id,refreshComponent,kitchens,setKitchens,userId}) {
     // const [creatorId,setCreatorId]=useState('');

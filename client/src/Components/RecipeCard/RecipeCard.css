@@ -1,10 +1,12 @@
 .card {
+    margin: 0px 0.5rem 0px 0.5rem;
     background-color: pink;
     border: 1px;
     border-color: black;
     border-style: solid;
     height: fit-content;
     width: fit-content;
+    min-width: 10%;
 }
 
 .card p {

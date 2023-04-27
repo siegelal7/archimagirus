@@ -17,15 +17,8 @@ export default function MakeMeal() {
   const {user} =useContext(UserContext);
   const {id}=useParams();
   const [ingreds, setIngreds] = useState([]);
-  // const [ingredsPlaceholder, setIngredsPlaceholder] = useState([]);
   const [recipe, setRecipe] = useState([]);
   const [recipeName,setRecipeName]=useState('');
-  const [loginPleaseText, setLoginPleaseText]=useState('');
-  const [newIngred, setNewIngred] = useState({
-    name: '',
-    type:'Meat',
-    kitchen:id ? id : '',
-  });
   const [kitchenName,setKitchenName]=useState('');
 
   // const [layout,setLayout]=useState([])
@@ -53,7 +46,7 @@ export default function MakeMeal() {
           console.log(err);
         })
     }
-  },[kitchenName])
+  },[kitchenName]);
 
   const getIngreds = (id)=>{
     setIngreds([]);
@@ -82,45 +75,6 @@ export default function MakeMeal() {
       }
     }
     setRecipe(recipeOnRight);
-  };
-
-  const handleIngredInputChange = e =>{
-    const val = e.target.value;
-    if (val != ''){
-        setNewIngred({name:val, type:newIngred.type, kitchen: newIngred.kitchen});
-    }
-  };
-
-  const handleSelectChange = e=>{
-    const valSelected = e?.target?.value;
-    if(valSelected){
-        setNewIngred({type:valSelected, name:newIngred.name, kitchen: newIngred.kitchen});
-    }
-  };
-
-  const handleNewIngredSubmit = e =>{
-    e.preventDefault();
-    if(!newIngred.kitchen || newIngred.kitchen === ''){
-      setLoginPleaseText('Login or create a kitchen to add an ingredient');
-    } else if(newIngred.name === ''){
-      setLoginPleaseText('Enter your ingredient name!');
-    }
-    if(newIngred.kitchen && newIngred.kitchen !== '' && newIngred.name !== ''){
-      axios.post(`/api/newingredient/${id}`, newIngred)
-        .then(response=>{
-            if(response.status==200){
-              console.log(response);
-              // setIngreds({type:'Meat', name:'', kitchen: newIngred.kitchen});
-              setNewIngred({type:'Meat', name:'', kitchen: newIngred.kitchen});
-                // setIngreds(...ingreds,[response.data]);
-                setIngreds([...ingreds, response.data?.ingredJson]);
-                
-            }
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-    }
   };
 
   const handleRecipeNameChange = e=>{
@@ -172,7 +126,7 @@ export default function MakeMeal() {
 
       <Link className="basicLink" to="/">Home</Link>
       {kitchenName != '' && <Link className="basicLink" to={`/singlekitchen/${id}`}>Back to {kitchenName} kitchen</Link>}
-      <AddIngredient handleNewIngredSubmit={handleNewIngredSubmit} newIngred={newIngred} handleIngredInputChange={handleIngredInputChange} handleSelectChange={handleSelectChange} loginPleaseText={loginPleaseText}></AddIngredient>
+      <AddIngredient from='MakeMeal' ingreds={ingreds} setIngreds={setIngreds} id={id}></AddIngredient>
 
       <div className="grid">
         <h1 className="row-column">Ingredients</h1>
