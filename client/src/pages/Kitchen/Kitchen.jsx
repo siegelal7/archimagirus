@@ -5,6 +5,7 @@ import DisplayKitchens from '../../Components/DisplayKitchens/DisplayKitchens';
 import { Link,useParams } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import './Kitchen.css';
+import Header from '../../Components/Header/Header';
 
 export default function Kitchen() {
     const {id} = useParams();
@@ -76,19 +77,7 @@ export default function Kitchen() {
     
   return (
     <>
-        {user?._id ? (
-            <Fragment>
-                <Link className='basicLink' to='/'>Home</Link>
-                {/* <Link className='basicLink' to={`/make/${id}`}>Create!</Link> */}
-                <Link className='basicLink' to='/logout'>Logout</Link>
-            {/* <Link to={`/make/${3234}`}>Create!</Link> */}
-            </Fragment>
-        ) : (
-            <Fragment>
-                <Link className='basicLink' to="/register">Register</Link>
-                <Link className='basicLink' to='/login'>Login</Link>
-            </Fragment>
-        )}
+        <Header user={user} currentPage="Kitchen"></Header>
         {/* <Link to='/logout'>Logout</Link>
         <Link to='/login'>Login</Link>
         <Link to='/'>Home Page</Link>

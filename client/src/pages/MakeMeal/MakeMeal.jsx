@@ -8,6 +8,7 @@ import { Link, useParams,useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { UserContext } from "../../Context/UserContext";
 import AddIngredient from "../../Components/AddIngredient/AddIngredient";
+import Header from "../../Components/Header/Header";
 // import DraggableGrid from "../../Components/DraggableGrid/DraggableGrid";
 
 export default function MakeMeal() {
@@ -53,7 +54,6 @@ export default function MakeMeal() {
     axios.get(`/api/getallingredients/${id}`)
     .then(response=>{
         if(response.status==200){
-          console.log(response);
             setIngreds(response.data);
             setKitchenName(response.data[0]?.kitchen?.kitchenName);
         }
@@ -104,7 +104,6 @@ export default function MakeMeal() {
     if(payload.recipeName!='' && payload.ingredient.length !== 0 && payload.kitchen){
       axios.post(`/api/makefood/${payload.kitchen}`,payload)
           .then(response=>{
-            console.log(response);
             setRecipeName('');
             setRecipe([]);
             getIngreds(id);
@@ -123,9 +122,8 @@ export default function MakeMeal() {
   //   ];
   return (
     <>
-
-      <Link className="basicLink" to="/">Home</Link>
-      {kitchenName != '' && <Link className="basicLink" to={`/singlekitchen/${id}`}>Back to {kitchenName} kitchen</Link>}
+      <Header kitchenName={kitchenName} id={id} currentPage='MakeMeal' user={user}></Header>
+      
       <AddIngredient from='MakeMeal' ingreds={ingreds} setIngreds={setIngreds} id={id}></AddIngredient>
 
       <div className="grid">

@@ -1,9 +1,18 @@
-.basicLink {
-    margin-right: 0.5rem;
+#ingredientsListContainer {
+    backdrop-filter: blur(2px);
+    box-shadow: 10px 10px 10px rgba(30,30,30,0.5);
+    width:fit-content;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 .container {
     display: flex;
     /* justify-content: center; */
     flex-flow: row wrap; 
+}
+
+.ingredientList {
+    font-size: larger;
+    font-weight:550;
 }

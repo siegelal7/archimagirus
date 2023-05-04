@@ -1,0 +1,21 @@
+body {
+    background-image: url('./assets/DJI_0090.JPG');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-blend-mode:multiply;
+    /* background-repeat: no-repeat; */
+    /* background-position: center; */
+    /* height: 100%; */
+    color: orangered;
+    font-size: larger;
+}
+
+.basicLink{
+    color: red;
+    font-size: larger;
+    margin-right: 0.5rem;
+}
+
+/* #root {
+    background: linear-gradient(to right bottom, #648880, #293f50);
+} */

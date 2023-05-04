@@ -3,6 +3,7 @@ import React, { useState,useEffect } from 'react';
 import KitchenCard from '../KitchenCard/KitchenCard';
 import { useNavigate } from 'react-router-dom';
 import "./DisplayKitchens.css";
+import handleKitchenCardClick from '../../utils/utilFunctions';
 
 export default function DisplayKitchens({id,refreshComponent,kitchens,setKitchens,userId}) {
     // const [creatorId,setCreatorId]=useState('');
@@ -41,16 +42,17 @@ export default function DisplayKitchens({id,refreshComponent,kitchens,setKitchen
     }
 
     const handleClickSingleClick =e=>{
-      // console.log(e);
-      let idFromUrl=null;
-      if(e.target.tagName =='DIV'){
-        // console.log(e.target.dataset.id);
-        idFromUrl=e.target.dataset.id;
-      }
-      else if (e.target.tagName=='P'){
-        // console.log(e.target.parentElement.dataset.id);
-        idFromUrl=e.target.parentElement.dataset.id;
-      }
+      // e.stopPropagation();
+      // let idFromUrl=null;
+      let idFromUrl=handleKitchenCardClick(e);
+      // if(e.target.tagName =='DIV'){
+      //   // console.log(e.target.dataset.id);
+      //   idFromUrl=e.target.dataset.id;
+      // }
+      // else if (e.target.tagName=='H3'){
+      //   // console.log(e.target.parentElement.dataset.id);
+      //   idFromUrl=e.target.parentElement.dataset.id;
+      // }
       if(idFromUrl){
         navigate(`/singlekitchen/${idFromUrl}`);
       }

@@ -1,4 +1,19 @@
 // import axios from 'axios';
+const handleKitchenCardClick = (e)=>{
+    let idFromUrl=null;
+    if(e.target.tagName =='DIV'){
+      // console.log(e.target.dataset.id);
+      idFromUrl=e.target.dataset.id;
+    }
+    else if (e.target.tagName=='H3'){
+      // console.log(e.target.parentElement.dataset.id);
+      idFromUrl=e.target.parentElement.dataset.id;
+    }
+    return idFromUrl;
+    // if(idFromUrl){
+    //   navigate(`/singlekitchen/${idFromUrl}`,{state:{searchValue:searchValue}});
+    // }
+}
 // const newIngredSubmit =(newIngred,setLoginPleaseText,setNewIngred)=>{
 //     if(!newIngred.kitchen || newIngred.kitchen === ''){
 //         setLoginPleaseText('Login or create a kitchen to add an ingredient');
@@ -23,4 +38,4 @@
 //       }
 // }
 
-// export default newIngredSubmit;
+export default handleKitchenCardClick;

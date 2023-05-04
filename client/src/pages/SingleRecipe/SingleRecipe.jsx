@@ -3,23 +3,34 @@ import React, { useEffect,useState } from 'react';
 import {useLocation, Link} from 'react-router-dom';
 import './SingleRecipe.css';
 import AddIngredient from '../../Components/AddIngredient/AddIngredient';
+import Header from '../../Components/Header/Header';
 
 export default function SingleRecipe() {
   const location = useLocation();
   const [recipe, setRecipe] = useState({});
   const [kitchenFrom, setKitchenFrom]=useState({});
   const [ingreds,setIngreds] = useState([]);
+  const [cancelCode, setCancelCode]=useState(false);
   // const [logicRan, setLogicRan]=useState(false);
 
   useEffect(()=>{
+    // if(!cancelCode){
     if(ingreds && ingreds.length === 0 && recipe && recipe.ingredient){
-      console.log(recipe)
-      setIngreds(recipe.ingredient);
+    console.log(recipe)
+    setIngreds(recipe.ingredient);
     }
+    // }
+    
+    // return ()=>{
+    //   setCancelCode(true);
+    // }
     // setLogicRan(true);
-  },[recipe])
+  },[recipe]);
 
   useEffect(()=>{
+    // if(!cancelCode){
+    console.log('ran!?!?');
+
     if(location.state?.recipe){
       const rec= location.state.recipe;
       axios.get(`/api/recipe/${rec}`)
@@ -30,15 +41,20 @@ export default function SingleRecipe() {
           console.log(err);
         })
     };
+
     if(location.state?.kitchenFrom){
       setKitchenFrom(location.state.kitchenFrom);
     };
+    // };
+
+    // return () =>{
+    //   setCancelCode(true);
+    // };
   },[location]);
 
   return (
     <>
-      {recipe && recipe?.kitchen && recipe?.kitchen.length !== 0 && kitchenFrom && kitchenFrom?.kitchenName && <Link className='marginBottomSmall' to={`/singlekitchen/${kitchenFrom?._id}`}>Back to {kitchenFrom.kitchenName} kitchen</Link>}
-
+      <Header currentPage='SingleRecipe' recipe={recipe} kitchenFrom={kitchenFrom}></Header>
       <AddIngredient recipeId={recipe._id} from='SingleRecipe' ingreds={recipe.ingredient} setIngreds={setIngreds} id={kitchenFrom._id}></AddIngredient>
 
       <div>

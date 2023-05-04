@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import SearchKitchens from "../../Components/SearchKitchens/SearchKitchens";
 import { UserContext } from "../../Context/UserContext";
 import axios from 'axios';
+import Header from "../../Components/Header/Header";
 
 export default function HomePage() {
   const [searchValue,setSearchValue]=useState('');
@@ -32,13 +33,10 @@ export default function HomePage() {
     },[firstMount]);
 
   const handleSearch =(e, priorSearchTerm)=>{
-    console.log(e);
-    // console.log(priorSearchTerm);
     e?.preventDefault();
     const termToSearch = searchValue != '' ? searchValue : priorSearchTerm;
     axios.get(`/api/getkitchenssearch/${termToSearch}`)
         .then(response=>{
-          console.log(response);
             if(response.data.length===0){
               setKitchensReturnText('No Kitchens returned');
             }
@@ -48,7 +46,6 @@ export default function HomePage() {
         })
         .catch(err=>{
             console.log(err);
-            // setKitchensReturnText('No Kitchens returned');
         });
   };
 
@@ -58,18 +55,8 @@ export default function HomePage() {
 
   return (
     <>
-      {user?._id ? (
-        <Fragment>
-          <Link className='basicLink' to="/logout">Logout</Link>
-          <Link className='basicLink' to={`/kitchen/${user._id}`}>My Kitchens</Link>
-          {/* <Link to={`/make/${3234}`}>Create!</Link> */}
-        </Fragment>
-      ) : (
-        <Fragment>
-          <Link className='basicLink' to="/register">Register</Link>
-          <Link className='basicLink' to="/login">Login</Link>
-        </Fragment>
-      )}
+    <Header user={user}></Header>
+     
 
       <h3 className="greetingText">Hello {user?.name}</h3>
       {/* {user?.name ? <p>Hello {user?.name}</p>: <p>Log in to see</p>} */}

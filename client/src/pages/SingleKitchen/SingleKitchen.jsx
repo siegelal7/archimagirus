@@ -3,6 +3,7 @@ import {useState,useEffect} from 'react';
 import {Link, useParams,useLocation,useNavigate} from 'react-router-dom';
 import "./SingleKitchen.css";
 import RecipeCard from '../../Components/RecipeCard/RecipeCard';
+import Header from '../../Components/Header/Header';
 
 export default function SingleKitchen() {
     const navigate=useNavigate();
@@ -11,7 +12,6 @@ export default function SingleKitchen() {
     const [errorText,setErrorText]=useState('');
     const [priorSearchTerm, setPriorSearchTerm]=useState('');
     const [recipes,setRecipes]=useState([]);
-
     const location = useLocation();
 
     useEffect(()=>{
@@ -20,12 +20,8 @@ export default function SingleKitchen() {
         }
         axios.get(`/api/getkitchensbyid/${id}`)
             .then(response=>{
-                console.log('api response');
-                console.log(response);
                 setKitchen(response.data);
                 if(response.data.recipes !== 0){
-                    console.log('uh recipes...');
-                    console.log(response.data.recipes);
                     setRecipes(response.data.recipes);
                 }
             })
@@ -36,41 +32,31 @@ export default function SingleKitchen() {
     },[id]);
     
     const handleSingleRecipeCardClick =(e)=>{
-        // console.log(e);
         e.stopPropagation();
         let node ={};
         let id='';
         let clickedRecipe={};
         if(e.target?.localName==='p'){
             node = e.target.parentElement;
-            // console.log('1st node');
-            // console.log(node);
         } else if(e.target?.localName==='div'){
-            // console.log('div');
             node=e.target;
-            // console.log('2nd node');
-            // console.log(node);
         }
         id=node.dataset?.id;
         clickedRecipe=node.dataset?.recipe;
-        // console.log('clickedRecipe');
-        // console.log(clickedRecipe);
         navigate(`/recipe/${id}`,{state:{recipe:clickedRecipe,kitchenFrom:kitchen}});
     }
 
     return (
-        <div>
-            {priorSearchTerm !== '' && priorSearchTerm ? <Link className='basicLink' to='/' state={{ from: priorSearchTerm }}>Return to Search</Link> : <Link className='basicLink' to={`/kitchen/${id}`}>Your kitchens</Link>}
-            <Link className='basicLink' to='/'>Home Page</Link>
-            <Link className='basicLink' to={`/make/${id}`}>Create!</Link>
-            <Link className='basicLink' to='/logout'>Logout</Link>
+        <div id='kitchenPageContainer'>
+            <Header id={id} currentPage="SingleKitchen" priorSearchTerm={priorSearchTerm}></Header> 
+            
             <h1>{kitchen?.kitchenName}</h1>
             {errorText !='' && (<p>{errorText}</p>)}
             {kitchen?.ingredients && kitchen?.ingredients.length != 0 && (
                 <>
-                    <ul>
+                    <ul id='ingredientsListContainer'>
                         {kitchen.ingredients.map(i=>(
-                            <li key={i._id}>{i.name}</li>
+                            <li className='ingredientList' key={i._id}>{i.name}</li>
                         ))}
                     </ul>
                 </>

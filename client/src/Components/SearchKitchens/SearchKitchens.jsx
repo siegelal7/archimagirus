@@ -4,21 +4,23 @@ import KitchenCard from '../KitchenCard/KitchenCard';
 import './SearchKitchens.css';
 import { useNavigate } from "react-router-dom";
 import {TailSpin} from 'react-loader-spinner';
+import handleKitchenCardClick from '../../utils/utilFunctions';
 
 export default function SearchKitchens({handleSearchInputChange,priorSearchTerm,handleSearch, searchValue, firstMount, kitchensReturned,kitchensReturnText}) {
   const navigate = useNavigate();
 
   const handleClickSingleClick =e=>{
     // console.log(e);
-    let idFromUrl=null;
-    if(e.target.tagName =='DIV'){
-      // console.log(e.target.dataset.id);
-      idFromUrl=e.target.dataset.id;
-    }
-    else if (e.target.tagName=='P'){
-      // console.log(e.target.parentElement.dataset.id);
-      idFromUrl=e.target.parentElement.dataset.id;
-    }
+    let  idFromUrl=handleKitchenCardClick(e);
+    // let idFromUrl=null;
+    // if(e.target.tagName =='DIV'){
+    //   // console.log(e.target.dataset.id);
+    //   idFromUrl=e.target.dataset.id;
+    // }
+    // else if (e.target.tagName=='H3'){
+    //   // console.log(e.target.parentElement.dataset.id);
+    //   idFromUrl=e.target.parentElement.dataset.id;
+    // }
     if(idFromUrl){
       navigate(`/singlekitchen/${idFromUrl}`,{state:{searchValue:searchValue}});
     }

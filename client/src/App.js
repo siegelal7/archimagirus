@@ -1,4 +1,4 @@
-// import './App.css';
+import './App.css';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Register from "./pages/Auth/Register.jsx";
 import HomePage from './pages/HomePage/HomePage';
@@ -12,6 +12,7 @@ import axios from "axios";
 import {UserContext} from './Context/UserContext';
 import MakeMeal from "./pages/MakeMeal/MakeMeal.jsx";
 import SingleRecipe from "./pages/SingleRecipe/SingleRecipe.jsx";
+// import Header from './Components/Header/Header';
 // const UserContext = createContext();
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
   
   return (
     <div className="App">
+      {/* <Header></Header> */}
       <UserContext.Provider value={{user:userLoggedIn, setUser:setUserLoggedIn}}>
         <Router>
           <Routes>
